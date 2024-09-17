@@ -27,7 +27,7 @@ st.sidebar.header("Filtros")
 
 
 #filtro de ações
-lista_acoes = st.multiselect("Escolha as ações para visualizar", dados.columns)
+lista_acoes = st.sidebar.multiselect("Escolha as ações para visualizar", dados.columns)
 if lista_acoes:
     dados = dados[lista_acoes]
     # Tratando incompatibilidade com apenas uma ação
@@ -37,6 +37,16 @@ if lista_acoes:
     else:
         dados = dados[lista_acoes]
 
-print(dados)
+# filtro de datas
+data_inicial =  dados.index.min().to_pydatetime()
+data_final = dados.index.max().to_pydatetime()
+
+intervalo_data = st.sidebar.slider("Selecione o período", 
+                                   min_value=data_inicial, 
+                                   max_value=data_final, 
+                                   value=(data_inicial, data_final))
+
+dados = dados.loc[intervalo_data[0]:intervalo_data[1]]
+
 # Criar gráfico
 st.line_chart(dados)
