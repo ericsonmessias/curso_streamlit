@@ -59,3 +59,27 @@ dados = dados.loc[intervalo_data[0]:intervalo_data[1]]
 st.line_chart(dados)
 
 # Performance
+texto_performance_ativos = ""
+
+if len(lista_acoes)==0:
+    lista_acoes = list(dados.columns)
+elif len(lista_acoes)==1:
+    dados = dados.rename(columns={"Close": acao_unica})
+
+for acao in lista_acoes:
+    performance_ativo = dados[acao].iloc[-1] / dados[acao].iloc[0] - 1
+    performance_ativo = float(performance_ativo)
+    
+    if performance_ativo > 0:
+        texto_performance_ativos = texto_performance_ativos + f"  \n{acao}: :green[{performance_ativo:.1%}]"
+    elif performance_ativo < 0:
+        texto_performance_ativos = texto_performance_ativos + f"  \n{acao}: :red[{performance_ativo:.1%}]"
+    else:
+        texto_performance_ativos = texto_performance_ativos + f"  \n{acao}: {performance_ativo:.1%}"
+        
+st.write(f"""
+### Performance dos Ativos
+Esta foi a performance dos ativos no periodo selecionado:
+
+{texto_performance_ativos}
+""") # markdown
