@@ -13,7 +13,14 @@ def carregar_dados(empresas):
     cotacoes_acao = cotacoes_acao["Close"] #Retorna valor de fechamento em forma de tabela
     return cotacoes_acao
 
-acoes = ["ITUB4.SA","CPLE6.SA","BBAS3.SA","BBSE3.SA"]
+@st.cache_data
+def carregar_ticker_acoes():
+    base_tickers = pd.read_csv("IBOV.csv", sep=";")
+    tickers = list(base_tickers["Código"])
+    tickers = [item + ".SA" for item in tickers]
+    return tickers
+
+acoes = carregar_ticker_acoes()
 dados = carregar_dados(acoes)
 
 # criar a interface do streamlit
@@ -50,3 +57,5 @@ dados = dados.loc[intervalo_data[0]:intervalo_data[1]]
 
 # Criar gráfico
 st.line_chart(dados)
+
+# Performance
