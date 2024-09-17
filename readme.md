@@ -1,4 +1,4 @@
-## criar um ambiente virtual para isolar as dependencias
+## Criar um ambiente virtual para isolar as dependencias
 
 ```bash
 python3 -m venv streamlit
